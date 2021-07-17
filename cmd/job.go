@@ -23,6 +23,7 @@ import (
 	"github.com/rainforest-tools/config-tools/models"
 	"github.com/rainforest-tools/config-tools/ui"
 	"github.com/spf13/cobra"
+	"github.com/gobuffalo/packr/v2"
 )
 
 // jobCmd represents the job command
@@ -82,7 +83,13 @@ func CreateJob() models.Job {
 }
 
 func CreateJobFile(path string, job models.Job) {
-	t, err := template.ParseFiles("./static/templates/job.tpl")
+	static := packr.New("static", "../static")
+	s, err := static.FindString("templates/job.tpl")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	t, err := template.New("template").Parse(s)
 	if err != nil {
 		fmt.Println(err)
 		return
