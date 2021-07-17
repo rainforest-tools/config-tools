@@ -71,7 +71,7 @@ func CreateJob() models.Job {
 	job.Modules = ui.GetMultiSelect(models.PromptContent{
 		Error: "",
 		Label: "Choose environment modules",
-	}, []string{"gcc", "opt", "python"})
+	}, []string{"opt", "gcc", "cuda/10", "cuda/11"})
 
 	job.Command = ui.GetInput(models.PromptContent{
 		Error: "",
