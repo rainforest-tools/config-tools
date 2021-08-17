@@ -20,10 +20,11 @@ import (
 	"html/template"
 	"os"
 
+	"github.com/gobuffalo/packr/v2"
 	"github.com/rainforest-tools/config-tools/models"
 	"github.com/rainforest-tools/config-tools/ui"
+	"github.com/rainforest-tools/config-tools/utils"
 	"github.com/spf13/cobra"
-	"github.com/gobuffalo/packr/v2"
 )
 
 // jobCmd represents the job command
@@ -59,10 +60,10 @@ func CreateJob() models.Job {
 		Label: "What's the name of job?",
 	})
 
-	job.Partition = ui.GetInput(models.PromptContent{
+	job.Partition = ui.GetSelect(models.PromptContent{
 		Error: "",
 		Label: "Which partition do you want to use?",
-	})
+	}, []string{"rtx2080ti", "v100-32g", "v100-16g"})
 
 	job.GPU = ui.GetInt(models.PromptContent{
 		Error: "",
@@ -72,7 +73,7 @@ func CreateJob() models.Job {
 	job.Modules = ui.GetMultiSelect(models.PromptContent{
 		Error: "",
 		Label: "Choose environment modules",
-	}, []string{"opt", "gcc", "cuda/10", "cuda/11"})
+	}, utils.GetModules())
 
 	job.Command = ui.GetInput(models.PromptContent{
 		Error: "",
